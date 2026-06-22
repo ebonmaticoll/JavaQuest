@@ -1,0 +1,1382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Java Quest</title>
+
+<style>
+:root {
+    --bg1: #17113a;
+    --bg2: #28145f;
+    --card: rgba(255, 255, 255, 0.12);
+    --card-strong: rgba(255, 255, 255, 0.2);
+    --text: #ffffff;
+    --muted: #d7d2ff;
+    --accent: #ffcc3d;
+    --accent2: #00e5ff;
+    --good: #4dff88;
+    --bad: #ff5c7a;
+    --purple: #a855f7;
+    --orange: #ff8a3d;
+    --shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
+    --radius: 24px;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: "Segoe UI", system-ui, sans-serif;
+    color: var(--text);
+    min-height: 100vh;
+    background:
+        radial-gradient(circle at top left, #4d2cff 0, transparent 28%),
+        radial-gradient(circle at bottom right, #00a7ff 0, transparent 22%),
+        linear-gradient(135deg, var(--bg1), var(--bg2));
+    overflow-x: hidden;
+}
+
+button, input {
+    font: inherit;
+}
+
+button {
+    cursor: pointer;
+}
+
+button:disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+.hidden {
+    display: none !important;
+}
+
+.app {
+    width: min(1180px, 94%);
+    margin: 0 auto;
+    padding: 24px 0 60px;
+}
+
+/* LANDING PAGE */
+
+.hero {
+    min-height: 100vh;
+    display: grid;
+    place-items: center;
+    text-align: center;
+    padding: 32px 16px;
+}
+
+.hero-card {
+    max-width: 850px;
+    padding: 44px;
+    border-radius: 36px;
+    background: linear-gradient(160deg, rgba(255,255,255,.18), rgba(255,255,255,.08));
+    box-shadow: var(--shadow);
+    border: 1px solid rgba(255,255,255,.22);
+    backdrop-filter: blur(12px);
+}
+
+.logo {
+    font-size: clamp(3rem, 8vw, 6rem);
+    margin: 0;
+    line-height: 1;
+    text-shadow: 0 8px 0 rgba(0,0,0,.25);
+}
+
+.subtitle {
+    color: var(--muted);
+    font-size: 1.25rem;
+    max-width: 680px;
+    margin: 20px auto 30px;
+}
+
+.name-row {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+input {
+    padding: 15px 18px;
+    border-radius: 999px;
+    border: 2px solid rgba(255,255,255,.35);
+    background: rgba(255,255,255,.15);
+    color: white;
+    min-width: min(360px, 100%);
+    outline: none;
+}
+
+input::placeholder {
+    color: #d8d1ff;
+}
+
+.primary-btn, .secondary-btn, .danger-btn {
+    border: 0;
+    border-radius: 999px;
+    padding: 15px 22px;
+    font-weight: 800;
+    color: #211047;
+    background: linear-gradient(135deg, var(--accent), #ff9f1c);
+    box-shadow: 0 8px 0 rgba(0,0,0,.25);
+    transition: transform .15s, box-shadow .15s;
+    margin: 5px;
+}
+
+.primary-btn:hover, .secondary-btn:hover, .danger-btn:hover {
+    transform: translateY(-2px);
+}
+
+.secondary-btn {
+    background: linear-gradient(135deg, var(--accent2), #5affd2);
+}
+
+.danger-btn {
+    background: linear-gradient(135deg, #ff5c7a, #ff9f1c);
+}
+
+/* DASHBOARD */
+
+.topbar {
+    display: grid;
+    grid-template-columns: 1.2fr 2fr auto;
+    gap: 16px;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.panel {
+    background: var(--card);
+    border: 1px solid rgba(255,255,255,.18);
+    border-radius: var(--radius);
+    padding: 18px;
+    box-shadow: var(--shadow);
+}
+
+.player {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.avatar {
+    width: 58px;
+    height: 58px;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #ffcc3d, #ff5c7a);
+    font-size: 2rem;
+    box-shadow: inset 0 -5px 0 rgba(0,0,0,.2);
+}
+
+.stat-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    text-align: center;
+}
+
+.stat {
+    background: rgba(255,255,255,.12);
+    border-radius: 18px;
+    padding: 10px;
+}
+
+.stat strong {
+    display: block;
+    font-size: 1.25rem;
+    color: var(--accent);
+}
+
+.progress-shell {
+    height: 18px;
+    background: rgba(0,0,0,.3);
+    border-radius: 999px;
+    overflow: hidden;
+    margin-top: 12px;
+}
+
+.progress-bar {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, var(--good), var(--accent2), var(--accent));
+    border-radius: 999px;
+    transition: width .4s;
+}
+
+.section-title {
+    margin: 28px 0 14px;
+}
+
+/* REGIONS */
+
+.regions {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+}
+
+.region-card {
+    position: relative;
+    overflow: hidden;
+    min-height: 230px;
+    padding: 22px;
+    border-radius: 28px;
+    border: 1px solid rgba(255,255,255,.2);
+    background: linear-gradient(160deg, rgba(255,255,255,.18), rgba(255,255,255,.08));
+    box-shadow: var(--shadow);
+}
+
+.region-card.locked {
+    filter: grayscale(.85);
+    opacity: .58;
+}
+
+.region-emoji {
+    font-size: 3rem;
+}
+
+.region-card h3 {
+    font-size: 1.4rem;
+    margin: 12px 0 6px;
+}
+
+.region-card p {
+    color: var(--muted);
+}
+
+.region-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    margin-top: 18px;
+}
+
+.badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 7px 11px;
+    border-radius: 999px;
+    background: rgba(0,0,0,.25);
+    font-weight: 700;
+    font-size: .85rem;
+}
+
+.region-btn {
+    padding: 10px 14px;
+    border-radius: 999px;
+    border: 0;
+    font-weight: 800;
+    background: white;
+    color: #251249;
+}
+
+/* CHALLENGE SCREEN */
+
+.challenge-layout {
+    display: grid;
+    grid-template-columns: 1fr 320px;
+    gap: 20px;
+}
+
+.challenge-card {
+    padding: 28px;
+    border-radius: 30px;
+    background: rgba(255,255,255,.14);
+    border: 1px solid rgba(255,255,255,.2);
+    box-shadow: var(--shadow);
+}
+
+.challenge-type {
+    color: var(--accent);
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: .06em;
+}
+
+.code {
+    background: #171923;
+    color: #e7f5ff;
+    padding: 18px;
+    border-radius: 18px;
+    overflow-x: auto;
+    margin: 16px 0;
+    border: 1px solid rgba(255,255,255,.12);
+    white-space: pre-wrap;
+    font-family: Consolas, Monaco, monospace;
+}
+
+.options {
+    display: grid;
+    gap: 12px;
+    margin-top: 18px;
+}
+
+.option-btn {
+    text-align: left;
+    border: 2px solid rgba(255,255,255,.18);
+    background: rgba(255,255,255,.1);
+    color: white;
+    padding: 15px 16px;
+    border-radius: 18px;
+    transition: .15s;
+}
+
+.option-btn:hover {
+    border-color: var(--accent);
+    transform: scale(1.01);
+}
+
+.option-btn.correct {
+    background: rgba(77, 255, 136, .25);
+    border-color: var(--good);
+}
+
+.option-btn.wrong {
+    background: rgba(255, 92, 122, .25);
+    border-color: var(--bad);
+}
+
+.text-answer {
+    width: 100%;
+    border-radius: 18px;
+    margin-top: 15px;
+}
+
+.feedback {
+    margin-top: 18px;
+    padding: 16px;
+    border-radius: 18px;
+    font-weight: 700;
+}
+
+.feedback.good {
+    background: rgba(77,255,136,.22);
+    border: 1px solid var(--good);
+}
+
+.feedback.bad {
+    background: rgba(255,92,122,.22);
+    border: 1px solid var(--bad);
+}
+
+.side-card {
+    position: sticky;
+    top: 16px;
+    align-self: start;
+}
+
+/* BADGES */
+
+.badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.achievement {
+    padding: 9px 12px;
+    border-radius: 999px;
+    background: rgba(255,255,255,.13);
+    border: 1px solid rgba(255,255,255,.18);
+}
+
+.achievement.earned {
+    background: linear-gradient(135deg, var(--accent), #ff8a3d);
+    color: #261044;
+    font-weight: 900;
+}
+
+/* CELEBRATION */
+
+.confetti {
+    position: fixed;
+    top: -20px;
+    width: 12px;
+    height: 12px;
+    border-radius: 3px;
+    animation: fall 1.1s linear forwards;
+    z-index: 9999;
+}
+
+@keyframes fall {
+    to {
+        transform: translateY(105vh) rotate(720deg);
+        opacity: 0;
+    }
+}
+
+.pulse {
+    animation: pulse .35s ease;
+}
+
+@keyframes pulse {
+    50% {
+        transform: scale(1.04);
+    }
+}
+
+/* RESPONSIVE DESIGN */
+
+@media (max-width: 900px) {
+    .topbar, .challenge-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .regions {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .side-card {
+        position: static;
+    }
+}
+
+@media (max-width: 620px) {
+    .regions {
+        grid-template-columns: 1fr;
+    }
+
+    .stat-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .hero-card {
+        padding: 28px 18px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div id="landing" class="hero">
+    <div class="hero-card">
+        <h1 class="logo">☕ Java Quest</h1>
+        <p class="subtitle">
+            Enter a colourful RPG world where every Java challenge gives you XP,
+            unlocks regions, defeats bosses, and helps you become a coding hero.
+        </p>
+
+        <div class="name-row">
+            <input id="nameInput" placeholder="Enter your hero name..." maxlength="20" />
+            <button class="primary-btn" onclick="startGame()">Start Quest</button>
+        </div>
+    </div>
+</div>
+
+<div id="game" class="app hidden">
+
+    <div class="topbar">
+        <div class="panel player">
+            <div class="avatar">🧙</div>
+            <div>
+                <strong id="playerName">Hero</strong><br />
+                <span id="titleText">Apprentice Coder</span>
+            </div>
+        </div>
+
+        <div class="panel">
+            <div class="stat-grid">
+                <div class="stat"><strong id="xpText">0</strong>XP</div>
+                <div class="stat"><strong id="levelText">1</strong>Level</div>
+                <div class="stat"><strong id="streakText">0</strong>Streak</div>
+                <div class="stat"><strong id="completeText">0/30</strong>Done</div>
+            </div>
+            <div class="progress-shell">
+                <div id="progressBar" class="progress-bar"></div>
+            </div>
+        </div>
+
+        <button class="danger-btn" onclick="resetProgress()">Reset</button>
+    </div>
+
+    <h2 class="section-title">🗺️ Quest Map</h2>
+    <div id="regions" class="regions"></div>
+
+    <h2 class="section-title">🏅 Achievements</h2>
+    <div id="badges" class="badges"></div>
+
+    <div id="challengeArea" class="hidden">
+        <h2 class="section-title">⚔️ Current Challenge</h2>
+
+        <div class="challenge-layout">
+            <div class="challenge-card">
+                <div class="challenge-type" id="challengeType"></div>
+                <h2 id="challengeTitle"></h2>
+                <p id="challengeQuestion"></p>
+                <pre id="challengeCode" class="code hidden"></pre>
+                <div id="options" class="options"></div>
+                <input id="textAnswer" class="text-answer hidden" placeholder="Type your answer..." />
+                <button id="submitTextBtn" class="primary-btn hidden" onclick="checkTextAnswer()">Submit Answer</button>
+                <div id="feedback" class="feedback hidden"></div>
+                <br />
+                <button id="nextBtn" class="primary-btn hidden" onclick="nextChallenge()">Next Challenge</button>
+                <button class="secondary-btn" onclick="backToMap()">Back to Map</button>
+            </div>
+
+            <div class="panel side-card">
+                <h3 id="sideRegion">Region</h3>
+                <p id="sideProgress">Progress</p>
+                <div class="progress-shell">
+                    <div id="regionProgressBar" class="progress-bar"></div>
+                </div>
+                <p>
+                    Tip: read Java code carefully. Computers follow instructions
+                    exactly, one line at a time.
+                </p>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script>
+const regions = [
+    {
+        id: "variables",
+        name: "Variables Valley",
+        emoji: "🏞️",
+        description: "Learn printing, variables, data types and Scanner input.",
+        unlockAt: 0
+    },
+    {
+        id: "conditions",
+        name: "Condition Castle",
+        emoji: "🏰",
+        description: "Use if, else if, else and Boolean logic.",
+        unlockAt: 5
+    },
+    {
+        id: "loops",
+        name: "Loop Forest",
+        emoji: "🌲",
+        description: "Repeat actions with for loops and while loops.",
+        unlockAt: 10
+    },
+    {
+        id: "arrays",
+        name: "Array Desert",
+        emoji: "🏜️",
+        description: "Store and process many values using arrays.",
+        unlockAt: 15
+    },
+    {
+        id: "methods",
+        name: "Method Mountains",
+        emoji: "⛰️",
+        description: "Break programs into reusable methods.",
+        unlockAt: 20
+    },
+    {
+        id: "oop",
+        name: "OOP Kingdom",
+        emoji: "👑",
+        description: "Create classes and objects like a true Java knight.",
+        unlockAt: 25
+    }
+];
+
+const challenges = [
+    {
+        id: 1,
+        region: "variables",
+        type: "mcq",
+        title: "Your First Spell",
+        question: "Which Java statement prints Hello World?",
+        options: [
+            "System.out.println(\"Hello World\");",
+            "print(\"Hello World\");",
+            "Console.WriteLine(\"Hello World\");",
+            "echo \"Hello World\";"
+        ],
+        answer: 0,
+        explanation: "Java uses System.out.println(...) to print text followed by a new line."
+    },
+    {
+        id: 2,
+        region: "variables",
+        type: "output",
+        title: "The Greeting Rune",
+        question: "What is the output?",
+        code: `System.out.print("Java");
+System.out.print("Quest");`,
+        options: [
+            "Java Quest",
+            "Java",
+            "Quest\nJava",
+            "JavaQuest"
+        ],
+        answer: 4,
+        explanation: "println prints each message on a new line."
+    },
+    {
+        id: 3,
+        region: "variables",
+        type: "mcq",
+        title: "Treasure Type",
+        question: "Which data type is best for storing a whole number such as 25?",
+        options: ["double", "String", "int", "boolean"],
+        answer: 2,
+        explanation: "int stores whole numbers."
+    },
+    {
+        id: 4,
+        region: "variables",
+        type: "bug",
+        title: "Broken Variable Potion",
+        question: "Which line correctly declares an integer variable called score?",
+        code: `integer score = 10;`,
+        options: [
+            "int score = 10;",
+            "score int = 10;",
+            "int = score 10;",
+            "String score = 10;"
+        ],
+        answer: 0,
+        explanation: "In Java, use int for integer variables."
+    },
+    {
+        id: 5,
+        region: "variables",
+        type: "boss",
+        title: "Boss Battle: The Scanner Goblin",
+        question: "Which line creates a Scanner object for keyboard input?",
+        code: `import java.util.Scanner;
+
+public class Main {
+    public static void main(String[] args) {
+        // Which line goes here?
+    }
+}`,
+        options: [
+            "Scanner input = new Scanner(System.in);",
+            "Scanner input = Scanner(System);",
+            "Input scanner = new Input();",
+            "new Scanner = System.in;"
+        ],
+        answer: 0,
+        explanation: "Scanner input = new Scanner(System.in); creates a Scanner for keyboard input."
+    },
+
+    {
+        id: 6,
+        region: "conditions",
+        type: "mcq",
+        title: "Castle Gate Check",
+        question: "Which operator means equal to in a Java condition?",
+        options: ["=", "==", "!=", "equals"],
+        answer: 1,
+        explanation: "Use == to compare primitive values. A single = assigns a value."
+    },
+    {
+        id: 7,
+        region: "conditions",
+        type: "output",
+        title: "Age Guardian",
+        question: "What is the output?",
+        code: `int age = 18;
+
+if (age >= 18) {
+    System.out.println("Enter");
+} else {
+    System.out.println("Wait");
+}`,
+        options: ["Enter", "Wait", "18", "No output"],
+        answer: 0,
+        explanation: "18 is greater than or equal to 18, so the if block runs."
+    },
+    {
+        id: 8,
+        region: "conditions",
+        type: "mcq",
+        title: "Boolean Shield",
+        question: "Which expression is true when score is 70 or more?",
+        options: ["score > 70", "score >= 70", "score <= 70", "score == 70 only"],
+        answer: 1,
+        explanation: "score >= 70 includes 70 and all higher values."
+    },
+    {
+        id: 9,
+        region: "conditions",
+        type: "bug",
+        title: "The Missing Bracket Curse",
+        question: "Which version fixes the condition?",
+        code: `if score > 50 {
+    System.out.println("Pass");
+}`,
+        options: [
+            `if (score > 50) {
+    System.out.println("Pass");
+}`,
+            `if score > 50 then {
+    System.out.println("Pass");
+}`,
+            `if [score > 50] {
+    System.out.println("Pass");
+}`,
+            `when (score > 50) {
+    System.out.println("Pass");
+}`
+        ],
+        answer: 0,
+        explanation: "Java conditions must be inside round brackets."
+    },
+    {
+        id: 10,
+        region: "conditions",
+        type: "boss",
+        title: "Boss Battle: The Dragon of Decisions",
+        question: "What is printed?",
+        code: `int mark = 65;
+
+if (mark >= 70) {
+    System.out.println("Distinction");
+} else if (mark >= 40) {
+    System.out.println("Pass");
+} else {
+    System.out.println("Fail");
+}`,
+        options: ["Distinction", "Pass", "Fail", "No output"],
+        answer: 1,
+        explanation: "65 is not at least 70, but it is at least 40."
+    },
+
+    {
+        id: 11,
+        region: "loops",
+        type: "output",
+        title: "Forest Footsteps",
+        question: "What is the output?",
+        code: `for (int i = 1; i <= 3; i++) {
+    System.out.print(i);
+}`,
+        options: ["123", "0123", "1234", "111"],
+        answer: 0,
+        explanation: "The loop prints 1, then 2, then 3."
+    },
+    {
+        id: 12,
+        region: "loops",
+        type: "mcq",
+        title: "Loop Compass",
+        question: "Which loop is usually best when you know exactly how many times to repeat?",
+        options: ["if loop", "for loop", "switch loop", "class loop"],
+        answer: 1,
+        explanation: "A for loop is commonly used for counted repetition."
+    },
+    {
+        id: 13,
+        region: "loops",
+        type: "bug",
+        title: "Infinite Vine Trap",
+        question: "Which line helps this while loop eventually stop?",
+        code: `int count = 1;
+
+while (count <= 5) {
+    System.out.println(count);
+    // missing line
+}`,
+        options: ["count++;", "count = 1;", "count--;", "System.out.println(count);"],
+        answer: 0,
+        explanation: "count++ increases count each time, so the loop can finish."
+    },
+    {
+        id: 14,
+        region: "loops",
+        type: "output",
+        title: "Even Number Path",
+        question: "What is printed?",
+        code: `for (int i = 2; i <= 6; i += 2) {
+    System.out.print(i + " ");
+}`,
+        options: ["2 3 4 5 6", "2 4 6", "0 2 4 6", "6 4 2"],
+        answer: 1,
+        explanation: "The loop starts at 2 and increases by 2 each time."
+    },
+    {
+        id: 15,
+        region: "loops",
+        type: "boss",
+        title: "Boss Battle: The Loop Beast",
+        question: "How many times does this loop run?",
+        code: `for (int i = 0; i < 5; i++) {
+    System.out.println("Java");
+}`,
+        options: ["4", "5", "6", "Forever"],
+        answer: 1,
+        explanation: "i takes the values 0, 1, 2, 3 and 4."
+    },
+
+    {
+        id: 16,
+        region: "arrays",
+        type: "mcq",
+        title: "Desert Inventory",
+        question: "Which line correctly creates an array of integers?",
+        options: [
+            "int[] numbers = {1, 2, 3};",
+            "array numbers = [1, 2, 3];",
+            "int numbers = {1, 2, 3};",
+            "numbers[] int = {1, 2, 3};"
+        ],
+        answer: 0,
+        explanation: "int[] numbers creates an integer array."
+    },
+    {
+        id: 17,
+        region: "arrays",
+        type: "output",
+        title: "Index Oasis",
+        question: "What is printed?",
+        code: `int[] scores = {10, 20, 30};
+System.out.println(scores[1]);`,
+        options: ["10", "20", "30", "Error"],
+        answer: 1,
+        explanation: "Array indexes start at 0, so scores[1] is 20."
+    },
+    {
+        id: 18,
+        region: "arrays",
+        type: "mcq",
+        title: "Length Crystal",
+        question: "How do you get the number of elements in an array called names?",
+        options: ["names.size()", "names.length", "length(names)", "names.count"],
+        answer: 1,
+        explanation: "Java arrays use .length without brackets."
+    },
+    {
+        id: 19,
+        region: "arrays",
+        type: "bug",
+        title: "Array Mirage",
+        question: "Why is this dangerous?",
+        code: `int[] values = {4, 5, 6};
+System.out.println(values[3]);`,
+        options: [
+            "Index 3 is outside the array",
+            "Arrays cannot store integers",
+            "println cannot print arrays",
+            "The array is empty"
+        ],
+        answer: 0,
+        explanation: "The valid indexes are 0, 1 and 2."
+    },
+    {
+        id: 20,
+        region: "arrays",
+        type: "boss",
+        title: "Boss Battle: The Sand Array Serpent",
+        question: "What is the total printed?",
+        code: `int[] nums = {2, 4, 6};
+int total = 0;
+
+for (int i = 0; i < nums.length; i++) {
+    total = total + nums[i];
+}
+
+System.out.println(total);`,
+        options: ["6", "10", "12", "246"],
+        answer: 2,
+        explanation: "2 + 4 + 6 = 12."
+    },
+
+    {
+        id: 21,
+        region: "methods",
+        type: "mcq",
+        title: "Mountain Shortcut",
+        question: "Why do programmers use methods?",
+        options: [
+            "To make code reusable and organised",
+            "To stop Java running",
+            "To replace variables",
+            "To avoid using classes forever"
+        ],
+        answer: 0,
+        explanation: "Methods help us organise code into reusable blocks."
+    },
+    {
+        id: 22,
+        region: "methods",
+        type: "output",
+        title: "Method Echo",
+        question: "What is printed?",
+        code: `public static void greet() {
+    System.out.println("Hi");
+}
+
+public static void main(String[] args) {
+    greet();
+    greet();
+}`,
+        options: ["Hi", "Hi\nHi", "greet greet", "No output"],
+        answer: 1,
+        explanation: "The method is called twice."
+    },
+    {
+        id: 23,
+        region: "methods",
+        type: "mcq",
+        title: "Return Gem",
+        question: "Which method header returns an int?",
+        options: [
+            "public static void add()",
+            "public static int add()",
+            "public static String add()",
+            "public static boolean add()"
+        ],
+        answer: 1,
+        explanation: "The return type int means the method returns an integer."
+    },
+    {
+        id: 24,
+        region: "methods",
+        type: "bug",
+        title: "Lost Return Spell",
+        question: "What is missing from this method?",
+        code: `public static int doubleNumber(int x) {
+    x * 2;
+}`,
+        options: [
+            "return x * 2;",
+            "print x * 2;",
+            "int return x * 2;",
+            "void x * 2;"
+        ],
+        answer: 0,
+        explanation: "A method with return type int must return an int value."
+    },
+    {
+        id: 25,
+        region: "methods",
+        type: "boss",
+        title: "Boss Battle: The Method Giant",
+        question: "What is printed?",
+        code: `public static int add(int a, int b) {
+    return a + b;
+}
+
+public static void main(String[] args) {
+    System.out.println(add(3, 4));
+}`,
+        options: ["3", "4", "7", "34"],
+        answer: 2,
+        explanation: "The method returns 3 + 4, which is 7."
+    },
+
+    {
+        id: 26,
+        region: "oop",
+        type: "mcq",
+        title: "Kingdom Blueprint",
+        question: "In OOP, what is a class?",
+        options: [
+            "A blueprint for creating objects",
+            "Only a loop",
+            "A type of Scanner",
+            "A printed message"
+        ],
+        answer: 0,
+        explanation: "A class is a blueprint. Objects are created from classes."
+    },
+    {
+        id: 27,
+        region: "oop",
+        type: "mcq",
+        title: "Object Knight",
+        question: "Which line creates a new Dog object?",
+        options: [
+            "Dog d = new Dog();",
+            "Dog d = Dog();",
+            "new d = Dog;",
+            "class Dog = new object;"
+        ],
+        answer: 0,
+        explanation: "new Dog() creates a new object from the Dog class."
+    },
+    {
+        id: 28,
+        region: "oop",
+        type: "output",
+        title: "Field of Flags",
+        question: "What is printed?",
+        code: `class Player {
+    String name = "Alex";
+}
+
+Player p = new Player();
+System.out.println(p.name);`,
+        options: ["Player", "name", "Alex", "p.name"],
+        answer: 2,
+        explanation: "p.name accesses the name field of the Player object."
+    },
+    {
+        id: 29,
+        region: "oop",
+        type: "bug",
+        title: "Constructor Curse",
+        question: "Which constructor is valid for this class?",
+        code: `class Book {
+    String title;
+}`,
+        options: [
+            "public Book(String t) { title = t; }",
+            "public Constructor(String t) { title = t; }",
+            "public void Book(String t) { title = t; }",
+            "Book public(String t) { title = t; }"
+        ],
+        answer: 0,
+        explanation: "A constructor has the same name as the class and no return type."
+    },
+    {
+        id: 30,
+        region: "oop",
+        type: "boss",
+        title: "Final Boss: The OOP Dragon King",
+        question: "What is printed?",
+        code: `class Hero {
+    String name;
+
+    Hero(String n) {
+        name = n;
+    }
+
+    void speak() {
+        System.out.println("I am " + name);
+    }
+}
+
+Hero h = new Hero("Nova");
+h.speak();`,
+        options: ["I am name", "I am Nova", "Nova speaks", "Hero Nova"],
+        answer: 1,
+        explanation: "The constructor stores Nova in name, then speak prints it."
+    }
+];
+
+const achievements = [
+    { id: "first", name: "🌟 First Victory", condition: s => s.completed.length >= 1 },
+    { id: "streak3", name: "🔥 3 Streak", condition: s => s.streak >= 3 },
+    { id: "level3", name: "🧪 Level 3 Coder", condition: s => getLevel(s.xp) >= 3 },
+    { id: "halfway", name: "🗺️ Halfway Hero", condition: s => s.completed.length >= 15 },
+    { id: "boss1", name: "🐉 Boss Slayer", condition: s => s.completed.some(id => challenges.find(c => c.id === id)?.type === "boss") },
+    { id: "all", name: "👑 Java Quest Champion", condition: s => s.completed.length >= challenges.length }
+];
+
+let state = {
+    name: "",
+    xp: 0,
+    streak: 0,
+    completed: [],
+    badges: []
+};
+
+let currentChallenge = null;
+
+function loadState() {
+    const saved = localStorage.getItem("javaQuestState");
+
+    if (saved) {
+        state = JSON.parse(saved);
+        showGame();
+    }
+}
+
+function saveState() {
+    localStorage.setItem("javaQuestState", JSON.stringify(state));
+}
+
+function startGame() {
+    const name = document.getElementById("nameInput").value.trim();
+    state.name = name || "Java Hero";
+    saveState();
+    showGame();
+}
+
+function showGame() {
+    document.getElementById("landing").classList.add("hidden");
+    document.getElementById("game").classList.remove("hidden");
+    render();
+}
+
+function getLevel(xp) {
+    return Math.floor(xp / 100) + 1;
+}
+
+function xpForChallenge(challenge) {
+    return challenge.type === "boss" ? 60 : 30;
+}
+
+function render() {
+    updateAchievements();
+
+    document.getElementById("playerName").textContent = state.name;
+    document.getElementById("xpText").textContent = state.xp;
+    document.getElementById("levelText").textContent = getLevel(state.xp);
+    document.getElementById("streakText").textContent = state.streak;
+    document.getElementById("completeText").textContent = `${state.completed.length}/${challenges.length}`;
+    document.getElementById("progressBar").style.width = `${(state.completed.length / challenges.length) * 100}%`;
+
+    const level = getLevel(state.xp);
+
+    document.getElementById("titleText").textContent =
+        level >= 8 ? "Java Archmage" :
+        level >= 5 ? "Code Knight" :
+        level >= 3 ? "Bug Hunter" :
+        "Apprentice Coder";
+
+    renderRegions();
+    renderBadges();
+    saveState();
+}
+
+function renderRegions() {
+    const container = document.getElementById("regions");
+    container.innerHTML = "";
+
+    regions.forEach(region => {
+        const regionChallenges = challenges.filter(c => c.region === region.id);
+        const done = regionChallenges.filter(c => state.completed.includes(c.id)).length;
+        const unlocked = state.completed.length >= region.unlockAt;
+
+        const card = document.createElement("div");
+        card.className = `region-card ${unlocked ? "" : "locked"}`;
+
+        card.innerHTML = `
+            <div class="region-emoji">${region.emoji}</div>
+            <h3>${region.name}</h3>
+            <p>${region.description}</p>
+            <div class="progress-shell">
+                <div class="progress-bar" style="width:${(done / regionChallenges.length) * 100}%"></div>
+            </div>
+            <div class="region-footer">
+                <span class="badge">${done}/${regionChallenges.length} complete</span>
+                <button class="region-btn" ${unlocked ? "" : "disabled"}>
+                    ${unlocked ? "Enter" : "Locked"}
+                </button>
+            </div>
+        `;
+
+        if (unlocked) {
+            card.querySelector("button").onclick = () => openNextChallenge(region.id);
+        }
+
+        container.appendChild(card);
+    });
+}
+
+function renderBadges() {
+    const container = document.getElementById("badges");
+    container.innerHTML = "";
+
+    achievements.forEach(badge => {
+        const earned = state.badges.includes(badge.id);
+        const badgeEl = document.createElement("div");
+        badgeEl.className = `achievement ${earned ? "earned" : ""}`;
+        badgeEl.textContent = earned ? badge.name : "🔒 " + badge.name.replace(/^.+? /, "");
+        container.appendChild(badgeEl);
+    });
+}
+
+function updateAchievements() {
+    achievements.forEach(badge => {
+        if (!state.badges.includes(badge.id) && badge.condition(state)) {
+            state.badges.push(badge.id);
+        }
+    });
+}
+
+function openNextChallenge(regionId) {
+    const next = challenges.find(c => c.region === regionId && !state.completed.includes(c.id));
+
+    if (!next) {
+        alert("Region complete! Try another unlocked region.");
+        return;
+    }
+
+    openChallenge(next);
+}
+
+function openChallenge(challenge) {
+    currentChallenge = challenge;
+
+    document.getElementById("challengeArea").classList.remove("hidden");
+    document.getElementById("challengeArea").scrollIntoView({ behavior: "smooth" });
+
+    document.getElementById("challengeType").textContent =
+        challenge.type === "mcq" ? "Multiple Choice" :
+        challenge.type === "output" ? "Predict the Output" :
+        challenge.type === "bug" ? "Fix the Bug" :
+        challenge.type === "boss" ? "Boss Battle" :
+        "Challenge";
+
+    document.getElementById("challengeTitle").textContent = challenge.title;
+    document.getElementById("challengeQuestion").textContent = challenge.question;
+
+    const code = document.getElementById("challengeCode");
+
+    if (challenge.code) {
+        code.textContent = challenge.code;
+        code.classList.remove("hidden");
+    } else {
+        code.classList.add("hidden");
+    }
+
+    const options = document.getElementById("options");
+    options.innerHTML = "";
+
+    document.getElementById("feedback").classList.add("hidden");
+    document.getElementById("nextBtn").classList.add("hidden");
+    document.getElementById("textAnswer").classList.add("hidden");
+    document.getElementById("submitTextBtn").classList.add("hidden");
+
+    if (challenge.options) {
+        challenge.options.forEach((option, index) => {
+            const btn = document.createElement("button");
+            btn.className = "option-btn";
+            btn.textContent = option;
+            btn.onclick = () => checkAnswer(index, btn);
+            options.appendChild(btn);
+        });
+    } else {
+        document.getElementById("textAnswer").classList.remove("hidden");
+        document.getElementById("submitTextBtn").classList.remove("hidden");
+    }
+
+    const region = regions.find(r => r.id === challenge.region);
+    const regionChallenges = challenges.filter(c => c.region === challenge.region);
+    const done = regionChallenges.filter(c => state.completed.includes(c.id)).length;
+
+    document.getElementById("sideRegion").textContent = `${region.emoji} ${region.name}`;
+    document.getElementById("sideProgress").textContent = `${done}/${regionChallenges.length} completed`;
+    document.getElementById("regionProgressBar").style.width = `${(done / regionChallenges.length) * 100}%`;
+}
+
+function checkAnswer(selectedIndex, button) {
+    const buttons = document.querySelectorAll(".option-btn");
+    buttons.forEach(btn => btn.disabled = true);
+
+    const correct = selectedIndex === currentChallenge.answer;
+
+    if (correct) {
+        button.classList.add("correct");
+        completeChallenge();
+    } else {
+        button.classList.add("wrong");
+        buttons[currentChallenge.answer].classList.add("correct");
+        state.streak = 0;
+        showFeedback(false, "Not quite. " + currentChallenge.explanation);
+    }
+
+    render();
+}
+
+function checkTextAnswer() {
+    const input = document.getElementById("textAnswer").value.trim().toLowerCase();
+    const accepted = currentChallenge.acceptedAnswers || [];
+    const correct = accepted.map(a => a.toLowerCase()).includes(input);
+
+    if (correct) {
+        completeChallenge();
+    } else {
+        state.streak = 0;
+        showFeedback(false, "Try again. " + currentChallenge.explanation);
+    }
+
+    render();
+}
+
+function completeChallenge() {
+    if (!state.completed.includes(currentChallenge.id)) {
+        state.completed.push(currentChallenge.id);
+        state.xp += xpForChallenge(currentChallenge);
+        state.streak += 1;
+    }
+
+    showFeedback(true, `Correct! +${xpForChallenge(currentChallenge)} XP. ${currentChallenge.explanation}`);
+    celebrate();
+
+    document.querySelector(".challenge-card").classList.add("pulse");
+
+    setTimeout(() => {
+        document.querySelector(".challenge-card").classList.remove("pulse");
+    }, 400);
+}
+
+function showFeedback(isGood, message) {
+    const feedback = document.getElementById("feedback");
+    feedback.className = `feedback ${isGood ? "good" : "bad"}`;
+    feedback.textContent = message;
+    feedback.classList.remove("hidden");
+
+    document.getElementById("nextBtn").classList.remove("hidden");
+}
+
+function nextChallenge() {
+    const regionChallenges = challenges.filter(c => c.region === currentChallenge.region);
+    const next = regionChallenges.find(c => !state.completed.includes(c.id));
+
+    if (next) {
+        openChallenge(next);
+    } else {
+        alert("Region complete! Return to the map to enter the next region.");
+        backToMap();
+    }
+}
+
+function backToMap() {
+    document.getElementById("challengeArea").classList.add("hidden");
+    window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+function resetProgress() {
+    const confirmReset = confirm("Are you sure you want to reset Java Quest progress?");
+
+    if (!confirmReset) return;
+
+    localStorage.removeItem("javaQuestState");
+
+    state = {
+        name: "",
+        xp: 0,
+        streak: 0,
+        completed: [],
+        badges: []
+    };
+
+    document.getElementById("game").classList.add("hidden");
+    document.getElementById("landing").classList.remove("hidden");
+    document.getElementById("nameInput").value = "";
+}
+
+function celebrate() {
+    const colours = ["#ffcc3d", "#00e5ff", "#4dff88", "#ff5c7a", "#a855f7"];
+
+    for (let i = 0; i < 40; i++) {
+        const piece = document.createElement("div");
+        piece.className = "confetti";
+        piece.style.left = Math.random() * 100 + "vw";
+        piece.style.background = colours[Math.floor(Math.random() * colours.length)];
+        piece.style.animationDelay = Math.random() * 0.3 + "s";
+        piece.style.transform = `rotate(${Math.random() * 360}deg)`;
+        document.body.appendChild(piece);
+
+        setTimeout(() => piece.remove(), 1400);
+    }
+}
+
+loadState();
+</script>
+
+</body>
+</html>
